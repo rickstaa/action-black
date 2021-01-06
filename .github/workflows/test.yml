@@ -26,7 +26,7 @@ jobs:
       - name: Check 'is_formatted' output value
         run: |
           formatted=${{ steps.black-format.outputs.current_version }}
-          if [[ ${formatted} != "false" ]];
+          if [[ ${formatted} != "false" ]]; then
             echo "'is_formatted'  output invalid!"
             exit 1
           else
@@ -55,7 +55,7 @@ jobs:
       - name: Check 'is_formatted' output value
         run: |
           formatted=${{ steps.black-format.outputs.current_version }}
-          if [[ ${formatted} != "false" ]];
+          if [[ ${formatted} != "false" ]]; then
             echo "'is_formatted'  output invalid!"
             exit 1
           else
