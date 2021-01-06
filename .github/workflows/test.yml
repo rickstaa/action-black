@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        id: black-format
+        id: black_format
         with:
           black_args: "."
       - name: Check if formatting was successful
