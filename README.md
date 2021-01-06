@@ -5,11 +5,11 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/rickstaa/action-black?logo=github\&sort=semver)](https://github.com/rickstaa/action-black/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github\&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This action runs the [black formatter](https://github.com/psf/black) on push or pull requests to improve code review experience.
+This action runs the [black formatter](https://github.com/psf/black) to check/format your code on a push or pull request.
 
 ## Inputs
 
-### `black_flags`
+### `black_args`
 
 **optional**: Black input arguments. Defaults to `. --check --diff`.
 
@@ -25,7 +25,7 @@ Boolean specifying whether any files were formatted using the black formatter.
 
 ## Basic usage
 
-In it's simplest form this action can be used to check/format your code using the black formatter.
+In it's simplest form this action can be used to check/format your code using the black formater.
 
 ```yaml
 name: reviewdo
@@ -45,7 +45,7 @@ jobs:
 
 ### Annotate changes
 
-This action can be combined with [reviewdog/action-suggester](https://github.com/reviewdog/action-suggester) to also annotate any possible changes.
+This action can be combined with [reviewdog/action-suggester](https://github.com/reviewdog/action-suggester) also to annotate any possible changes.
 
 ```yaml
 name: reviewdog
@@ -70,7 +70,7 @@ jobs:
         branch: actions/black
 ```
 
-### Commit changes or create pull request
+### Commit changes or create a pull request
 
 This action can be combined with [peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request) or [stefanzweifel/git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action) to also apply the annotated changes to the repository.
 

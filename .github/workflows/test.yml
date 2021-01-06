@@ -22,7 +22,7 @@ jobs:
           fi
 
   test-format:
-    name: runner / black-format (github-check-format)
+    name: runner / black-format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

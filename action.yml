@@ -2,7 +2,7 @@ name: "Run black formatter"
 description: "Run the black formatter on your codebase."
 author: "Rick Staa"
 inputs:
-  black_flags:
+  black_args:
     description: "Black input arguments."
     required: false
     default: ""
