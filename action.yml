@@ -19,4 +19,4 @@ branding:
   icon: "check-circle"
 runs:
   using: "docker"
-  image: "action/Dockerfile"
+  image: "Dockerfile"
