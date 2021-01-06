@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        with:
-          fail_on_error: "false"
       - name: Check if code is left untouched (not formatted)
         run: |
           changed_files=$(git status --porcelain | wc -l)
@@ -24,13 +22,12 @@ jobs:
           fi
 
   test-format:
-    name: runner / black-format
+    name: runner / black-format (format)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          fail_on_error: "false"
           black_args: "."
       - name: Check if formatting was successful
         run: |
