@@ -61,6 +61,7 @@ jobs:
       with:
         black_args: "."
     - name: Annotate diff changes using reviewdog
+      if: steps.action-black.outputs.is_formatted == 'true'
       uses: reviewdog/action-suggester@v1
       with:
         tool_name: blackfmt
@@ -68,33 +69,7 @@ jobs:
 
 ### Commit changes or create a pull request
 
-This action can be combined with [peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request) or [stefanzweifel/git-auto-commit-action](https://github.com/stefanzweifel/git-auto-commit-action) to also apply the annotated changes to the repository.
-
-#### Commit changes
-
-```yaml
-name: reviewdog
-on: [push, pull_request]
-jobs:
-  name: runner / black
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.head_ref }}
-    - name: Format files using black formatter
-      uses: rickstaa/action-black@v1
-      id: action-black
-      with:
-        black_args: "."
-    - name: Commit black formatting results
-      if: failure() || steps.action-black.outputs.is_formatted == 'true'
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: ":art: Format Python code with psf/black push"
-```
-
-#### Create pull request
+This action can be combined with [peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request) to also apply the annotated changes to the repository.
 
 ```yaml
 name: reviewdog
@@ -110,7 +85,7 @@ jobs:
       with:
         black_args: "."
     - name: Create Pull Request
-      if: failure() || steps.action-black.outputs.is_formatted == 'true'
+      if: steps.action-black.outputs.is_formatted == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}

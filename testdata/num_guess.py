@@ -1,8 +1,8 @@
 """Small test script taken from https://wiki.python.org/moin/SimplePrograms"""
 
 import random
-import sys # F401 'os' imported but unused
-import os # F401 'os' imported but unused
+import sys  # F401 'os' imported but unused
+import os  # F401 'os' imported but unused
 
 ### E265 block comment should start with '# '
 print("Hello from reviewdog!")
@@ -14,7 +14,9 @@ guesses_made = 0
 name = input("Hello! What is your name?\n")
 
 number = random.randint(1, 20)
-print("Well, {0}, I am thinking of a number between 1 and 20.".format(name)) # E501 line too long (80 > 79 characters)
+print(
+    "Well, {0}, I am thinking of a number between 1 and 20.".format(name)
+)  # E501 line too long (80 > 79 characters)
 
 while guesses_made < 6:
 
@@ -40,4 +42,4 @@ if guess == number:
 else:
     print("Nope. The number I was thinking of was {0}".format(number))
 
-import itertools # E402 module level import not at top of file
+import itertools  # E402 module level import not at top of file

@@ -30,29 +30,41 @@ black_output=$(black ${black_args[@]} 2>&1) || black_exit_val="$?"
 echo "${black_output}"
 
 # Check for black/reviewdog errors
-if [[ "${black_exit_val}" -eq "0" ]]; then
-  black_error="false"
-  if [[ "${formatting}" != "true" ]]; then
-    echo "::set-output name=is_formatted::true"
-  else
-    echo "::set-output name=is_formatted::false"
-  fi
-elif [[ "${black_exit_val}" -eq "1" ]]; then
-  black_error="true"
+if [[ "${formatting}" != "true" ]]; then
   echo "::set-output name=is_formatted::false"
-elif [[ "${black_exit_val}" -eq "123" ]]; then
-  black_error="true"
-  if [[ "${black_output[*]}" == *" files reformatted"* || \
-    "${black_output[*]}" == *" file reformatted"* ]]; then
-    echo "::set-output name=is_formatted::true"
+  if [[ "${black_exit_val}" -eq "0" ]]; then
+    black_error="false"
+  elif [[ "${black_exit_val}" -eq "1" ]]; then
+    black_error="true"
+  elif [[ "${black_exit_val}" -eq "123" ]]; then
+    black_error="true"
+    echo "[action-black] ERROR: Black found a syntax error when checking the" \
+      "files (error code: ${black_exit_val})."
   else
-    echo "::set-output name=is_formatted::false"
+    echo "[action-black] ERROR: Something went wrong while trying to run the" \
+      "black formatter (error code: ${black_exit_val})."
+    exit 1
   fi
 else
-  echo "::set-output name=is_formatted::false"
-  echo "[action-black] ERROR: Something went wrong while trying to run the" \
-    "black formatter (error code: ${black_exit_val})."
-  exit 1
+  if [[ "${black_exit_val}" -eq "0" ]]; then
+    black_error="false"
+    # Check if black formatted files
+    if [[ "${black_output[*]}" == *" files reformatted"* || \
+      "${black_output[*]}" == *" file reformatted"* ]]; then
+      echo "::set-output name=is_formatted::true"
+    else
+      echo "::set-output name=is_formatted::false"
+    fi
+  elif [[ "${black_exit_val}" -eq "123" ]]; then
+    black_error="true"
+    echo "[action-black] ERROR: Black found a syntax error when checking the" \
+      "files (error code: ${black_exit_val})."
+  else
+    echo "::set-output name=is_formatted::false"
+    echo "[action-black] ERROR: Something went wrong while trying to run the" \
+      "black formatter (error code: ${black_exit_val})."
+    exit 1
+  fi
 fi
 
 # Throw error if an error occurred and fail_on_error is true
