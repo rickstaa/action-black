@@ -1,0 +1,40 @@
+name: Test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  test-check:
+    name: runner / black-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+      - name: Check if code is left untouched (not formatted)
+        run: |
+          changed_files=$(git status --porcelain | wc -l)
+          if [[ ${changed_files} -eq 0 ]]; then
+            echo "No changes detected!"
+          else
+            echo "Changes detected!"
+            exit 1
+          fi
+
+  test-format:
+    name: runner / black-format (github-check-format)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          black_args: "."
+      - name: Check if formatting was successful
+        run: |
+          changed_files=$(git status --porcelain | wc -l)
+          if [[ ${changed_files} -eq 0 ]]; then
+            echo "No changes detected!"
+            exit 1
+          else
+            echo "Changes detected!"
+          fi

@@ -1,0 +1,22 @@
+name: "Run black formatter"
+description: "Run the black formatter on your codebase."
+author: "Rick Staa"
+inputs:
+  black_flags:
+    description: "Black input arguments."
+    required: false
+    default: ""
+  fail_on_error:
+    description: |
+      Exit code when black formatting errors are found [true, false]. Defaults to 'false'.
+    required: false
+    default: "false"
+outputs:
+  is_formatted:
+    description: "Whether the files were formatted using the black formatter."
+branding:
+  color: "black"
+  icon: "check-circle"
+runs:
+  using: "docker"
+  image: "action/Dockerfile"
