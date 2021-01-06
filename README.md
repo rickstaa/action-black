@@ -29,7 +29,7 @@ In it's simplest form this action can be used to check/format your code using th
 
 ```yaml
 name: reviewdo
-on: [pull_request]
+on: [push, pull_request]
 jobs:
   linter_name:
     name: runner / black formatter

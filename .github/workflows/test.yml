@@ -33,7 +33,6 @@ jobs:
             echo "'is_formatted'  output valid."
           fi
 
-
   test-format:
     name: runner / black-format (format)
     runs-on: ubuntu-latest
