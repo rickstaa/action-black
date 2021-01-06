@@ -15,7 +15,7 @@ This action runs the [black formatter](https://github.com/psf/black) to check/fo
 
 ### `fail_on_error`
 
-**optional**: Exit code when black formatting errors are found \[true, false]. Defaults to 'false'.
+**optional**: Exit code when black formatting errors are found \[true, false]. Defaults to 'true'.
 
 ## Outputs
 
@@ -25,7 +25,7 @@ Boolean specifying whether any files were formatted using the black formatter.
 
 ## Basic usage
 
-In it's simplest form this action can be used to check/format your code using the black formater.
+In it's simplest form this action can be used to check/format your code using the black formatter.
 
 ```yaml
 name: reviewdo
@@ -38,14 +38,14 @@ jobs:
       - uses: actions/checkout@v2
       - uses: reviewdog/action-black@v1
         with:
-          black_args: "."
+          black_args: ". --check"
 ```
 
 ## Advanced use cases
 
 ### Annotate changes
 
-This action can be combined with [reviewdog/action-suggester](https://github.com/reviewdog/action-suggester) also to annotate any possible changes.
+This action can be combined with [reviewdog/action-suggester](https://github.com/reviewdog/action-suggester) also to annotate any possible changes (uses `git diff`).
 
 ```yaml
 name: reviewdog
@@ -57,17 +57,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: Check files using black formatter
       uses: rickstaa/action-black@v1
-    - name: Create Pull Request
-      if: failure()
-      uses: peter-evans/create-pull-request@v3
+      id: action-black
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        title: "Format Python code with psf/black push"
-        commit-message: ":art: Format Python code with psf/black"
-        body: |
-          There appear to be some python formatting errors in ${{ github.sha }}. This pull request
-          uses the [psf/black](https://github.com/psf/black) formatter to fix these issues.
-        branch: actions/black
+        black_args: "."
+    - name: Annotate diff changes using reviewdog
+      uses: reviewdog/action-suggester@v1
+      with:
+        tool_name: blackfmt
 ```
 
 ### Commit changes or create a pull request
@@ -78,7 +74,7 @@ This action can be combined with [peter-evans/create-pull-request](https://githu
 
 ```yaml
 name: reviewdog
-on: [pull_request]
+on: [push, pull_request]
 jobs:
   name: runner / black
   runs-on: ubuntu-latest
@@ -86,16 +82,13 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.head_ref }}
-    - name: Check files using black formatter
-      uses: reviewdog/action-black@v1
+    - name: Format files using black formatter
+      uses: rickstaa/action-black@v1
+      id: action-black
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        reporter: github-check
-        level: error
-        fail_on_error: true
-        format: true
+        black_args: "."
     - name: Commit black formatting results
-      if: failure()
+      if: failure() || steps.action-black.outputs.is_formatted == 'true'
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: ":art: Format Python code with psf/black push"
@@ -105,22 +98,19 @@ jobs:
 
 ```yaml
 name: reviewdog
-on: [pull_request]
+on: [push, pull_request]
 jobs:
   name: runner / black
   runs-on: ubuntu-latest
   steps:
     - uses: actions/checkout@v2
     - name: Check files using black formatter
-      uses: reviewdog/action-black@v1
+      uses: rickstaa/action-black@v1
+      id: action-black
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        reporter: github-check
-        level: error
-        fail_on_error: true
-        format: true
+        black_args: "."
     - name: Create Pull Request
-      if: failure()
+      if: failure() || steps.action-black.outputs.is_formatted == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}

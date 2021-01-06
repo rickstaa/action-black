@@ -8,9 +8,9 @@ inputs:
     default: ""
   fail_on_error:
     description: |
-      Exit code when black formatting errors are found [true, false]. Defaults to 'false'.
+      Exit code when black formatting errors are found [true, false]. Defaults to 'true'.
     required: false
-    default: "false"
+    default: "true"
 outputs:
   is_formatted:
     description: "Whether the files were formatted using the black formatter."
