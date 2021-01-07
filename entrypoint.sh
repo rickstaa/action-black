@@ -16,7 +16,7 @@ else
 fi
 
 # Check if formatting was requested
-regex='\s+(--diff|--check)\s+'
+regex='\s+(--diff|--check)\s?'
 if [[ "${black_args[*]}" =~ $regex ]]; then
   formatting="false"
   black_print_str="Checking"
