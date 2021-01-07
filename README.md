@@ -28,7 +28,7 @@ Boolean specifying whether any files were formatted using the black formatter.
 In it's simplest form this action can be used to check/format your code using the black formatter.
 
 ```yaml
-name: reviewdo
+name: black-action
 on: [push, pull_request]
 jobs:
   linter_name:
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: reviewdog/action-black@v1
+      - uses: rickstaa/action-black@v1
         with:
           black_args: ". --check"
 ```
@@ -48,7 +48,7 @@ jobs:
 This action can be combined with [reviewdog/action-suggester](https://github.com/reviewdog/action-suggester) also to annotate any possible changes (uses `git diff`).
 
 ```yaml
-name: reviewdog
+name: black-action
 on: [push, pull_request]
 jobs:
   name: runner / black
@@ -72,7 +72,7 @@ jobs:
 This action can be combined with [peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request) to also apply the annotated changes to the repository.
 
 ```yaml
-name: reviewdog
+name: black-action
 on: [push, pull_request]
 jobs:
   name: runner / black
