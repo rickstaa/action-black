@@ -29,7 +29,7 @@ echo "[action-black] ${black_print_str} python code using the black formatter...
 black_output=$(black ${black_args[@]} 2>&1) || black_exit_val="$?"
 echo "${black_output}"
 
-# Check for black/reviewdog errors
+# Check for black errors
 if [[ "${formatting}" != "true" ]]; then
   echo "::set-output name=is_formatted::false"
   if [[ "${black_exit_val}" -eq "0" ]]; then
