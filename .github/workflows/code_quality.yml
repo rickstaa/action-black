@@ -2,7 +2,7 @@ name: Code Quality CI
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 jobs:
   shellcheck:
