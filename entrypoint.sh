@@ -46,15 +46,17 @@ if [[ "${formatting}" != "true" ]]; then
     exit 1
   fi
 else
+  # Check if black formatted files
+  regex='\s?[0-9]+\sfiles? reformatted(\.|,)\s?'
+  if [[ "${black_output[*]}" =~ $regex ]]; then
+    echo "::set-output name=is_formatted::true"
+  else
+    echo "::set-output name=is_formatted::false"
+  fi
+
+  # Check if error was encountered
   if [[ "${black_exit_val}" -eq "0" ]]; then
     black_error="false"
-    # Check if black formatted files
-    if [[ "${black_output[*]}" == *" files reformatted"* || \
-      "${black_output[*]}" == *" file reformatted"* ]]; then
-      echo "::set-output name=is_formatted::true"
-    else
-      echo "::set-output name=is_formatted::false"
-    fi
   elif [[ "${black_exit_val}" -eq "123" ]]; then
     black_error="true"
     echo "[action-black] ERROR: Black found a syntax error when checking the" \
