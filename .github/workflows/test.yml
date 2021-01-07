@@ -42,6 +42,7 @@ jobs:
         id: black_format
         with:
           black_args: "."
+          fail_on_error: "false"
       - name: Check if formatting was successful
         run: |
           changed_files=$(git status --porcelain | wc -l)
