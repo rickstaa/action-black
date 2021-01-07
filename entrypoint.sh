@@ -24,10 +24,24 @@ else
   black_print_str="Formatting"
 fi
 
+# Remove '-q' and '--quiet' from the black arguments if present
+# NOTE: Having these flags in the action prevents the action from working.
+quiet="false"
+black_args_tmp=()
+for item in "${black_args[@]}"; do
+  if [[ "${item}" != "-q" && "${item}" != "--quiet" ]]; then
+    black_args_tmp+=("${item}") #Quotes when working with strings
+  else
+    quiet="true"
+  fi
+done
+
 black_exit_val="0"
 echo "[action-black] ${black_print_str} python code using the black formatter..."
-black_output=$(black ${black_args[@]} 2>&1) || black_exit_val="$?"
-echo "${black_output}"
+black_output="$(black ${black_args_tmp[*]} 2>&1)" || black_exit_val="$?"
+if [[ "${quiet}" != 'true' ]]; then
+  echo "${black_output}"
+fi
 
 # Check for black errors
 if [[ "${formatting}" != "true" ]]; then
