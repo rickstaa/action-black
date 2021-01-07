@@ -94,5 +94,6 @@ jobs:
         body: |
           There appear to be some python formatting errors in ${{ github.sha }}. This pull request
           uses the [psf/black](https://github.com/psf/black) formatter to fix these issues.
+        base: ${{ github.head_ref }} # Creates pull request onto pull request or commit branch
         branch: actions/black
 ```
