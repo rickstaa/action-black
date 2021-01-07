@@ -1,5 +1,5 @@
 name: "Run black formatter"
-description: "Run the black formatter on your codebase."
+description: "Run the black formatter on your codebase to improve code review experience."
 author: "Rick Staa"
 inputs:
   black_args:
