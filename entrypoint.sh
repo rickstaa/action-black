@@ -16,7 +16,8 @@ else
 fi
 
 # Check if formatting was requested
-if [[ "${black_args[*]}" == *" --diff "* || "${black_args[*]}" == *" --check "* ]]; then
+regex='\S?(--diff|--check)\S?'
+if [[ "${black_args[*]}" =~ $regex ]]; then
   formatting="false"
   black_print_str="Checking"
 else
@@ -24,14 +25,18 @@ else
   black_print_str="Formatting"
 fi
 
-# Remove '-q' and '--quiet' from the black arguments if present
-# NOTE: Having these flags in the action prevents the action from working.
+# Check if '-q' or `--quiet` flags are present
 quiet="false"
 black_args_tmp=()
 for item in "${black_args[@]}"; do
   if [[ "${item}" != "-q" && "${item}" != "--quiet" ]]; then
-    black_args_tmp+=("${item}") #Quotes when working with strings
+    black_args_tmp+=("${item}")
   else
+    # Remove `quiet` related flags
+    # NOTE: Prevents us from checking if files were formatted
+    if [[ "${formatting}" != 'true' ]]; then
+      black_args_tmp+=("${item}")
+    fi
     quiet="true"
   fi
 done
@@ -61,7 +66,7 @@ if [[ "${formatting}" != "true" ]]; then
   fi
 else
   # Check if black formatted files
-  regex='\s?[0-9]+\sfiles? reformatted(\.|,)\s?'
+  regex='\S?[0-9]+\sfiles?\sreformatted(\.|,)\S?'
   if [[ "${black_output[*]}" =~ $regex ]]; then
     echo "::set-output name=is_formatted::true"
   else
