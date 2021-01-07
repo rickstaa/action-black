@@ -1,29 +1,13 @@
-# Action-black
+# Action-black GitHub Action
 
 [![Test](https://github.com/rickstaa/action-black/workflows/Test/badge.svg)](https://github.com/rickstaa/action-black/actions?query=workflow%3ATest)
 [![release](https://github.com/rickstaa/action-black/workflows/release/badge.svg)](https://github.com/rickstaa/action-black/actions?query=workflow%3Arelease)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/rickstaa/action-black?logo=github\&sort=semver)](https://github.com/rickstaa/action-black/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github\&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This action runs the [black formatter](https://github.com/psf/black) to check/format your code on a push or pull request.
+This action runs the [black formatter](https://github.com/psf/black) to check/format your python code on a push or pull request.
 
-## Inputs
-
-### `black_args`
-
-**optional**: Black input arguments. Defaults to `. --check --diff`.
-
-### `fail_on_error`
-
-**optional**: Exit code when black formatting errors are found \[true, false]. Defaults to 'true'.
-
-## Outputs
-
-### `is_formatted`
-
-Boolean specifying whether any files were formatted using the black formatter.
-
-## Basic usage
+## Quickstart
 
 In it's simplest form this action can be used to check/format your code using the black formatter.
 
@@ -41,6 +25,22 @@ jobs:
           black_args: ". --check"
 ```
 
+## Inputs
+
+### `black_args`
+
+**optional**: Black input arguments. Defaults to `. --check --diff`.
+
+### `fail_on_error`
+
+**optional**: Exit code when black formatting errors are found \[true, false]. Defaults to 'true'.
+
+## Outputs
+
+### `is_formatted`
+
+Boolean specifying whether any files were formatted using the black formatter.
+
 ## Advanced use cases
 
 ### Annotate changes
@@ -55,13 +55,13 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     - uses: actions/checkout@v2
-    - name: Check files using black formatter
+    - name: Check files using the black formatter
       uses: rickstaa/action-black@v1
-      id: action-black
+      id: action_black
       with:
         black_args: "."
     - name: Annotate diff changes using reviewdog
-      if: steps.action-black.outputs.is_formatted == 'true'
+      if: steps.action_black.outputs.is_formatted == 'true'
       uses: reviewdog/action-suggester@v1
       with:
         tool_name: blackfmt
@@ -79,13 +79,13 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     - uses: actions/checkout@v2
-    - name: Check files using black formatter
+    - name: Check files using the black formatter
       uses: rickstaa/action-black@v1
-      id: action-black
+      id: action_black
       with:
         black_args: "."
     - name: Create Pull Request
-      if: steps.action-black.outputs.is_formatted == 'true'
+      if: steps.action_black.outputs.is_formatted == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
