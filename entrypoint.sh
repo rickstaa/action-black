@@ -16,7 +16,7 @@ else
 fi
 
 # Check if formatting was requested
-regex='\S?(--diff|--check)\S?'
+regex='\s?(--diff|--check)\s?'
 if [[ "${black_args[*]}" =~ $regex ]]; then
   formatting="false"
   black_print_str="Checking"
@@ -66,7 +66,7 @@ if [[ "${formatting}" != "true" ]]; then
   fi
 else
   # Check if black formatted files
-  regex='\S?[0-9]+\sfiles?\sreformatted(\.|,)\S?'
+  regex='\s?[0-9]+\sfiles?\sreformatted(\.|,)\s?'
   if [[ "${black_output[*]}" =~ $regex ]]; then
     echo "::set-output name=is_formatted::true"
   else
