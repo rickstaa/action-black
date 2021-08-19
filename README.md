@@ -5,7 +5,7 @@
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/rickstaa/action-black?logo=github\&sort=semver)](https://github.com/rickstaa/action-black/releases)
 [![action-bumpr supported](https://img.shields.io/badge/bumpr-supported-ff69b4?logo=github\&link=https://github.com/haya14busa/action-bumpr)](https://github.com/haya14busa/action-bumpr)
 
-This action runs the [black formatter](https://github.com/psf/black) to check/format your python code on a push or pull request.
+This action runs the [black formatter](https://github.com/psf/black) to check/format your python code on a push or pull request. It is similar to [reviewdog/action-black](https://github.com/reviewdog/action-black) that can annotate the black changes required with [Reviewdog](https://github.com/reviewdog/reviewdog). However, this version also allows you to format the code using GitHub actions (see #advanced-use-cases).
 
 ## Quickstart
 
