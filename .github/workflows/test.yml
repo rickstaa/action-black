@@ -9,7 +9,7 @@ jobs:
     name: runner / black-format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./
         id: black_format
         with:
@@ -37,7 +37,7 @@ jobs:
     name: runner / black-format (format)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./
         id: black_format
         with:
