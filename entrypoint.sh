@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e # Increase bash strictness
 set -o pipefail
+pwd
+ls
 
 # If no arguments are given use current working directory
 black_args=(".")
@@ -43,7 +45,8 @@ done
 
 black_exit_val="0"
 echo "[action-black] ${black_print_str} python code using the black formatter..."
-black_output="$(./venv/bin/black ${black_args_tmp[*]} 2>&1)" || black_exit_val="$?"
+# shellcheck disable=SC2086
+black_output="$(/venv/bin/black ${black_args_tmp[*]} 2>&1)" || black_exit_val="$?"
 if [[ "${quiet}" != 'true' ]]; then
   echo "${black_output}"
 fi
