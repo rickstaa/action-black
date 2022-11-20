@@ -53,7 +53,7 @@ fi
 
 # Check for black errors
 if [[ "${formatting}" != "true" ]]; then
-  echo "::set-output name=is_formatted::false"
+  echo "is_formatted=false" >> $GITHUB_OUTPUT
   if [[ "${black_exit_val}" -eq "0" ]]; then
     black_error="false"
   elif [[ "${black_exit_val}" -eq "1" ]]; then
@@ -71,9 +71,9 @@ else
   # Check if black formatted files
   regex='\s?[0-9]+\sfiles?\sreformatted(\.|,)\s?'
   if [[ "${black_output[*]}" =~ $regex ]]; then
-    echo "::set-output name=is_formatted::true"
+    echo "is_formatted=true" >> $GITHUB_OUTPUT
   else
-    echo "::set-output name=is_formatted::false"
+    echo "is_formatted=false" >> $GITHUB_OUTPUT
   fi
 
   # Check if error was encountered
@@ -84,7 +84,7 @@ else
     echo "[action-black] ERROR: Black found a syntax error when checking the" \
       "files (error code: ${black_exit_val})."
   else
-    echo "::set-output name=is_formatted::false"
+    echo "is_formatted=false" >> $GITHUB_OUTPUT
     echo "[action-black] ERROR: Something went wrong while trying to run the" \
       "black formatter (error code: ${black_exit_val})."
     exit 1
